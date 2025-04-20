@@ -2,7 +2,7 @@
 #include <PubSubClient.h>
 #include "ServoClient.h"
 
-ServoClient myServo(25, 0, 15);
+ServoClient myServo(25, 90, 15);
 
 const char* WIFI_SSID = "DOCTORNUTRIA";
 const char* WIFI_PASS = "iloveiot";
@@ -24,6 +24,8 @@ void callback(char* topic, byte* payload, unsigned int length) {
   for (int i = 0; i < length; i++) {
     message += (char)payload[i];
   }
+  Serial.print(message);
+  Serial.print("\n");
   if (message == "OPEN") {
     myServo.open();
   }

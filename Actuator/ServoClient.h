@@ -24,11 +24,13 @@ class ServoClient {
     void loop(){
       if (currentAngle < targetAngle){
         currentAngle++;
+        moveToTarget();
       }
       else if (currentAngle > targetAngle){
         currentAngle--;
+        moveToTarget();
       }
-      moveToTarget();
+      
     }
     void setTarget(const byte& target){
       this->targetAngle = target;
@@ -37,7 +39,7 @@ class ServoClient {
       targetAngle = 90; 
     }
     void close(){
-      targetAngle = 0;
+      targetAngle = 180;
     }
 };
 
