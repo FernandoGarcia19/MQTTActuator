@@ -15,7 +15,6 @@ class ServoClient {
     }
     void init(){
       servo.attach(pin);
-      servo.write(targetAngle);
     }
     void moveToTarget(){
       servo.write(currentAngle);
