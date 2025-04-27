@@ -9,20 +9,21 @@ class Actuator {
     WifiManager wifiManager;
     MQTTClient mqttClient;
     ServoClient servo;
-    byte initialAngle = 90;
-    long delay = 15;
     const char* topic;
+
     void handleAction(const String& message) {
       if (message == "OPEN") {
         servo.open();
       } else if (message == "CLOSE") {
         servo.close();
+      } else {
+        servo.moveToTarget(message.toInt());
       }
     }
 
   public:
     Actuator(const char* SSID, const char* password, const char* broker, int port, const char* clientId, const byte& pin, const char* topic)
-      : wifiManager(SSID, password), mqttClient(broker, port, clientId), servo(pin, initialAngle, delay), topic(topic) {
+      : wifiManager(SSID, password), mqttClient(broker, port, clientId), servo(pin), topic(topic) {
     }
 
     void init() {
@@ -50,7 +51,6 @@ class Actuator {
         mqttClient.connect();
       }
       mqttClient.loop();
-      servo.loop();
     }
 };
 

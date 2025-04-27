@@ -1,44 +1,30 @@
 #ifndef SERVOCLIENT_H
 #define SERVOCLIENT_H
+#define CLOSED_ANGLE 180
+#define OPEN_ANGLE 0
 #include <ESP32Servo.h>
 
 class ServoClient {
   private:
     Servo servo;
     byte pin;
-    byte currentAngle;
-    byte targetAngle;
-    long delayDuration;
-  public:
-    ServoClient(byte pin, byte initialAngle, long delayDuration)
-    : pin(pin), currentAngle(initialAngle), targetAngle(initialAngle), delayDuration(delayDuration){
+    public:
+    ServoClient(byte pin)
+    : pin(pin){
     }
     void init(){
       servo.attach(pin);
+      servo.write(CLOSED_ANGLE);
     }
-    void moveToTarget(){
-      servo.write(currentAngle);
-      delay(delayDuration);
+    void moveToTarget(const byte& target){
+      servo.write(target);
     }
-    void loop(){
-      if (currentAngle < targetAngle){
-        currentAngle++;
-        moveToTarget();
-      }
-      else if (currentAngle > targetAngle){
-        currentAngle--;
-        moveToTarget();
-      }
-      
-    }
-    void setTarget(const byte& target){
-      this->targetAngle = target;
-    }
+
     void open(){
-      targetAngle = 90; 
+      servo.write(OPEN_ANGLE);
     }
     void close(){
-      targetAngle = 180;
+      servo.write(CLOSED_ANGLE);
     }
 };
 
